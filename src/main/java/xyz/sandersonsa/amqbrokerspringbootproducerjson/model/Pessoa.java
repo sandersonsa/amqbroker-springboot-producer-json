@@ -19,6 +19,7 @@ public class Pessoa {
     
     @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate dtNascimento;
+    
     private Endereco endereco;
 
     @Override
