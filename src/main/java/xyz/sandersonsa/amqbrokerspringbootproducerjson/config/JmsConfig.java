@@ -24,15 +24,10 @@ import org.springframework.jms.config.JmsListenerContainerFactory;
 import org.springframework.jms.support.converter.MappingJackson2MessageConverter;
 import org.springframework.jms.support.converter.MessageConverter;
 import org.springframework.jms.support.converter.MessageType;
-// // import org.springframework.amqp.core.AmqpTemplate;
-// // amqpTemplate.convertAndSend("javainuseExchange", "javainuse", emp);
 
 @Configuration
 @EnableJms
 public class JmsConfig {
-
-    private static final String dateFormat = "yyyy-MM-dd";
-    private static final String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
     @Bean
     public JmsListenerContainerFactory<?> defaultFactory(
@@ -53,43 +48,5 @@ public class JmsConfig {
        converter.setTypeIdPropertyName("_type");
        return converter;
     }
-
-    // @Bean
-    // @Primary
-    // public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
-    //     System.out.println("Config is starting.");
-    //     ObjectMapper objectMapper = builder.createXmlMapper(false).build();
-    //     objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-    //     return objectMapper;
-    // }
-
-    // @Bean
-    // public Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder() {
-    //     return new Jackson2ObjectMapperBuilder().serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(dateFormat)))
-    //         .serializationInclusion(JsonInclude.Include.NON_NULL);
-    // }
-
-    // @Bean
-    // public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
-    //     return builder -> {
-    //         builder.simpleDateFormat(dateTimeFormat);
-    //         builder.serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(dateFormat)));
-    //         builder.serializers(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(dateTimeFormat)));
-    //     };
-    // }
-
-    // @Bean
-	// public ObjectMapper objectMapper() {
-
-	// 	ObjectMapper objectMapper = new ObjectMapper();
-	// 	// objectMapper.findAndRegisterModules();
-    //     objectMapper.registerModule(new JavaTimeModule());
-    //     objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-	// 	return objectMapper;
-		
-	// 	// return JsonMapper.builder()
-    //     // .findAndAddModules()
-    //     // .build();
-	// }
 
 }
