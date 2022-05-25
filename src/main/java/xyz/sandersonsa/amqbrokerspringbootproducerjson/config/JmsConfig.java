@@ -16,6 +16,7 @@ import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilde
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
@@ -54,32 +55,41 @@ public class JmsConfig {
     }
 
     @Bean
-    public Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder() {
-        return new Jackson2ObjectMapperBuilder().serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(dateFormat)))
-            .serializationInclusion(JsonInclude.Include.NON_NULL);
+    @Primary
+    public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
+        System.out.println("Config is starting.");
+        ObjectMapper objectMapper = builder.createXmlMapper(false).build();
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        return objectMapper;
     }
 
-    @Bean
-    public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
-        return builder -> {
-            builder.simpleDateFormat(dateTimeFormat);
-            builder.serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(dateFormat)));
-            builder.serializers(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(dateTimeFormat)));
-        };
-    }
+    // @Bean
+    // public Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder() {
+    //     return new Jackson2ObjectMapperBuilder().serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(dateFormat)))
+    //         .serializationInclusion(JsonInclude.Include.NON_NULL);
+    // }
 
-    @Bean
-	public ObjectMapper objectMapper() {
+    // @Bean
+    // public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
+    //     return builder -> {
+    //         builder.simpleDateFormat(dateTimeFormat);
+    //         builder.serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(dateFormat)));
+    //         builder.serializers(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(dateTimeFormat)));
+    //     };
+    // }
 
-		ObjectMapper objectMapper = new ObjectMapper();
-		// objectMapper.findAndRegisterModules();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-		return objectMapper;
+    // @Bean
+	// public ObjectMapper objectMapper() {
+
+	// 	ObjectMapper objectMapper = new ObjectMapper();
+	// 	// objectMapper.findAndRegisterModules();
+    //     objectMapper.registerModule(new JavaTimeModule());
+    //     objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+	// 	return objectMapper;
 		
-		// return JsonMapper.builder()
-        // .findAndAddModules()
-        // .build();
-	}
+	// 	// return JsonMapper.builder()
+    //     // .findAndAddModules()
+    //     // .build();
+	// }
 
 }
