@@ -34,7 +34,8 @@ public class PessoaRestController {
     @PostMapping(value = "", consumes =  MediaType.APPLICATION_JSON_VALUE)
     public void inserirPessoa(@RequestBody Pessoa pessoa) {
         log.info(" # Recebendo pessoa .. :: {}", pessoa);
-        // produceService.sendTo(destinationQueue, pessoa);
+        log.info(" # Data Nascimento :: {}", pessoa.getDtNascimento().toString());
+        produceService.sendTo(destinationQueue, pessoa);
     }
     
 }
