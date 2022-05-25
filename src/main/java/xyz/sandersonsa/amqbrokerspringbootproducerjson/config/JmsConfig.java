@@ -2,6 +2,10 @@ package xyz.sandersonsa.amqbrokerspringbootproducerjson.config;
 
 import javax.jms.ConnectionFactory;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -38,5 +42,19 @@ public class JmsConfig {
        converter.setTypeIdPropertyName("_type");
        return converter;
     }
+
+    @Bean
+	public ObjectMapper objectMapper() {
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		// objectMapper.findAndRegisterModules();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+		return objectMapper;
+		
+		// return JsonMapper.builder()
+        // .findAndAddModules()
+        // .build();
+	}
 
 }

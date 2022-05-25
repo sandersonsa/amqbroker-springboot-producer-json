@@ -15,16 +15,4 @@ public class AmqbrokerSpringbootProducerJsonApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AmqbrokerSpringbootProducerJsonApplication.class, args);
 	}
-
-	@Bean
-	public ObjectMapper objectMapper() {
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.findAndRegisterModules();
-		return objectMapper;
-		
-		// return JsonMapper.builder()
-        // .findAndAddModules()
-        // .build();
-	}
-
 }
