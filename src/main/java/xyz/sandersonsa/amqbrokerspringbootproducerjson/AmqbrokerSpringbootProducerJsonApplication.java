@@ -18,9 +18,13 @@ public class AmqbrokerSpringbootProducerJsonApplication {
 
 	@Bean
 	public ObjectMapper objectMapper() {
-		return JsonMapper.builder()
-        .findAndAddModules()
-        .build();
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.findAndRegisterModules();
+		return objectMapper;
+		
+		// return JsonMapper.builder()
+        // .findAndAddModules()
+        // .build();
 	}
 
 }
