@@ -54,14 +54,14 @@ public class JmsConfig {
        return converter;
     }
 
-    @Bean
-    @Primary
-    public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
-        System.out.println("Config is starting.");
-        ObjectMapper objectMapper = builder.createXmlMapper(false).build();
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        return objectMapper;
-    }
+    // @Bean
+    // @Primary
+    // public ObjectMapper objectMapper(Jackson2ObjectMapperBuilder builder) {
+    //     System.out.println("Config is starting.");
+    //     ObjectMapper objectMapper = builder.createXmlMapper(false).build();
+    //     objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+    //     return objectMapper;
+    // }
 
     // @Bean
     // public Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder() {
