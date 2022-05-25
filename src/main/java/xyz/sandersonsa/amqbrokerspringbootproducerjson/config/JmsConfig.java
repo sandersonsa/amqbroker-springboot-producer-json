@@ -1,15 +1,22 @@
 package xyz.sandersonsa.amqbrokerspringbootproducerjson.config;
 
+import java.time.format.DateTimeFormatter;
+
 import javax.jms.ConnectionFactory;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.config.JmsListenerContainerFactory;
@@ -22,6 +29,9 @@ import org.springframework.jms.support.converter.MessageType;
 @Configuration
 @EnableJms
 public class JmsConfig {
+
+    private static final String dateFormat = "yyyy-MM-dd";
+    private static final String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
     @Bean
     public JmsListenerContainerFactory<?> defaultFactory(
@@ -41,6 +51,21 @@ public class JmsConfig {
        converter.setTargetType(MessageType.TEXT);
        converter.setTypeIdPropertyName("_type");
        return converter;
+    }
+
+    @Bean
+    public Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder() {
+        return new Jackson2ObjectMapperBuilder().serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(dateFormat)))
+            .serializationInclusion(JsonInclude.Include.NON_NULL);
+    }
+
+    @Bean
+    public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
+        return builder -> {
+            builder.simpleDateFormat(dateTimeFormat);
+            builder.serializers(new LocalDateSerializer(DateTimeFormatter.ofPattern(dateFormat)));
+            builder.serializers(new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(dateTimeFormat)));
+        };
     }
 
     @Bean
